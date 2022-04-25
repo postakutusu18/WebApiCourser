@@ -1,12 +1,27 @@
+using Contracts;
+using LoggerService;
+using NLog;
 using ProjectManagement.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+//Nlog Configuration
+LogManager.LoadConfiguration(String.Concat(Directory.GetCurrentDirectory(),"/nlog.config"));
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+//Nlog Dependenecy
+//builder.Services.AddSingleton<ILoggerManager, LoggerManager>();
+
 //builder.Services.AddCors();
-builder.Services.ConfigureCors();//extension method
+builder.Services.ConfigureCors();//extension method cors
+builder.Services.ConfigureLoggerManager();//extension method logger
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
