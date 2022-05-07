@@ -20,7 +20,7 @@ builder.Services.AddSwaggerGen();
 //builder.Services.AddCors();
 builder.Services.ConfigureCors();//extension method cors
 builder.Services.ConfigureLoggerManager();//extension method logger
-
+builder.Services.ConfigureSqlContext(builder.Configuration);
 
 var app = builder.Build();
 

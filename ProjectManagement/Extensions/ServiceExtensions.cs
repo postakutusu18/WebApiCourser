@@ -1,5 +1,7 @@
 ﻿using Contracts;
 using LoggerService;
+using Microsoft.EntityFrameworkCore;
+using Repository;
 
 namespace ProjectManagement.Extensions
 {
@@ -9,8 +11,8 @@ namespace ProjectManagement.Extensions
         {
             services.AddCors(options =>
             {
-                options.AddPolicy("CorsPolicy", builder => 
-                
+                options.AddPolicy("CorsPolicy", builder =>
+
                 builder.AllowAnyOrigin()//bütün kaynaklardan gelen istekleri kabul et.
                 .AllowAnyMethod() //tüm methodları kabul et.
                 .AllowAnyHeader()//HTTP headerları kabul et
@@ -20,7 +22,15 @@ namespace ProjectManagement.Extensions
 
         public static void ConfigureLoggerManager(this IServiceCollection services)
         {
-            services.AddSingleton<ILoggerManager,LoggerManager>();
+            services.AddSingleton<ILoggerManager, LoggerManager>();
+        }
+
+        public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddDbContext<RepositoryContext>(options =>
+            options.UseSqlServer(configuration.GetConnectionString("sqlConnection"),
+            project => project.MigrationsAssembly("ProjectManagement")
+            ));
         }
     }
 }
