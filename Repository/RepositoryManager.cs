@@ -8,14 +8,17 @@ public class RepositoryManager : IRepositoryManager
     public RepositoryManager(RepositoryContext context)
     {
         _context = context;
-        _projectRepository = new ProjectRepository(_context);
-        _employeeRepository = new EmployeeRepository(_context);
-    }
-    private IProjectRepository _projectRepository;
-    private IEmployeeRepository _employeeRepository;
-    public IProjectRepository Project => _projectRepository;
+        _projectRepository = 
+            new Lazy<IProjectRepository>(()=>new ProjectRepository(_context));
 
-    public IEmployeeRepository Employee => _employeeRepository;
+        _employeeRepository = 
+            new Lazy<IEmployeeRepository>(()=>new EmployeeRepository(_context));
+    }
+    private Lazy<IProjectRepository> _projectRepository;
+    private Lazy<IEmployeeRepository> _employeeRepository;
+    public IProjectRepository Project => _projectRepository.Value;
+
+    public IEmployeeRepository Employee => _employeeRepository.Value;
 
     public void Save()
     {
