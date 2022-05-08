@@ -7,7 +7,7 @@ namespace Entities.Models
     {
         [Column("EmployeeId")]
 
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         [Required(ErrorMessage ="firstname is required")]
         public string FirstName { get; set; }
         [Required(ErrorMessage ="Lastname is required")]
