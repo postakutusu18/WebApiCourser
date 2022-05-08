@@ -3,6 +3,7 @@ using Entities.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
+using Service.Contracts;
 
 namespace ProjectManagement.Controllers
 {
@@ -10,27 +11,31 @@ namespace ProjectManagement.Controllers
     [ApiController]
     public class ProjectsController : ControllerBase
     {
-        private List<Project> _projectList;
+        //private List<Project> _projectList;
         //private ILogger<ProjectsController> _logger; //base logger
-        private ILoggerManager _logger;
+        //private ILoggerManager _logger;
+        private IServiceManager _service;
         //private RepositoryContext _context;// doğrudan veritabanına bağlantı
-        private IRepositoryManager _repository;
-        public ProjectsController(ILoggerManager logger,
+        //private IRepositoryManager _repository;
+        public ProjectsController(
+            //ILoggerManager logger,
+            IServiceManager service
             /*RepositoryContext context*/
             /*ILogger<ProjectsController> logger*/
-            IRepositoryManager repository
+            //IRepositoryManager repository
             
             )
         {
            // _context = context;
-           _repository = repository;
-            _logger = logger; //DI
-            _projectList = new List<Project>
-            {
-                new Project{ Id = Guid.NewGuid(), Name ="Project 1"},
-                new Project{ Id = Guid.NewGuid(), Name ="Project 2"},
-                new Project{ Id = Guid.NewGuid(), Name ="Project 3"},
-            };
+           //_repository = repository;
+           // _logger = logger; //DI
+            _service = service;
+            //_projectList = new List<Project>
+            //{
+            //    new Project{ Id = Guid.NewGuid(), Name ="Project 1"},
+            //    new Project{ Id = Guid.NewGuid(), Name ="Project 2"},
+            //    new Project{ Id = Guid.NewGuid(), Name ="Project 3"},
+            //};
         }
 
        
@@ -38,22 +43,23 @@ namespace ProjectManagement.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            try
-            {
+            //try
+            //{
                 //var list=_context.Projects.ToList();
-                var list = _repository.Project.GetAllProjects(false);
+                //var list = _repository.Project.GetAllProjects(false);
+                var list=_service.ProjectService.GetAllProjects(false);
                 //int c = 10;
                 //int a = 0;
                 //int d = c / a;
                 // _logger.LogInformation("Projects.Get() has been run.");
-                _logger.LogInfo("Projects.Get() has been run.");
+               // _logger.LogInfo("Projects.Get() has been run.");
                 return Ok(list);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Projects.Get() has been crashed! : "+ex.Message);
-                throw;
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    _logger.LogError("Projects.Get() has been crashed! : "+ex.Message);
+            //    throw;
+            //}
          
         }
     }

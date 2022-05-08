@@ -2,6 +2,8 @@
 using LoggerService;
 using Microsoft.EntityFrameworkCore;
 using Repository;
+using Service;
+using Service.Contracts;
 
 namespace ProjectManagement.Extensions
 {
@@ -34,5 +36,7 @@ namespace ProjectManagement.Extensions
         }
 
         public static void ConfigureRepositoryManager(this IServiceCollection services)=>services.AddScoped<IRepositoryManager, RepositoryManager>();
+
+        public static void ConfigureServiceManager(this IServiceCollection services) => services.AddScoped<IServiceManager, ServiceManager>();
     }
 }
